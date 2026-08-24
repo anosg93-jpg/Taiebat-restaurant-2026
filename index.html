@@ -25,7 +25,7 @@
             --yellow-gold: #fbbf24; 
             --yellow-light: #fef3c7;
             --white: #ffffff; 
-            --glass: rgba(255, 255, 255, 0.85);
+            --glass: #ffffff;
             --header-bg: #ffffff;
         }
 
@@ -34,7 +34,7 @@
             --main-text: #f8fafc;
             --desc-text: #94a3b8;
             --white: #1e293b;
-            --glass: rgba(30, 41, 59, 0.85);
+            --glass: #1e293b;
             --header-bg: #1e293b;
         }
 
@@ -48,14 +48,14 @@
             display: flex; justify-content: center; align-items: center;
             transition: 0.8s cubic-bezier(0.65, 0, 0.35, 1);
         }
-        .loader-content { text-align: center; }
+        .loader-content { text-align: center; padding: 0 20px; }
         .loader-logo-big {
-            width: 150px; height: 150px; border-radius: 40px;
+            width: 260px; height: 74px; border-radius: 14px;
             margin-bottom: 20px; animation: pulse 1.5s infinite ease-in-out;
-            object-fit: cover; box-shadow: 0 15px 40px rgba(29, 78, 216, 0.25);
-            border: 3px solid var(--yellow-gold);
+            object-fit: contain; box-shadow: 0 10px 30px rgba(29, 78, 216, 0.2);
+            background: #1e3a8a; padding: 6px;
         }
-        .loader-text { font-weight: 900; color: var(--accent); font-size: 2.2rem; margin-bottom: 4px; }
+        .loader-text { font-weight: 900; color: var(--accent); font-size: 2.2rem; margin-bottom: 4px; display: none; }
         
         .creative-slogan {
             display: inline-block;
@@ -78,27 +78,29 @@
         }
         .creative-counter span { color: var(--accent); font-variant-numeric: tabular-nums; }
         @keyframes fadeInCounter { to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
         @keyframes progress { from { width: 0; } to { width: 100%; } }
         .splash-hidden { transform: translateY(-100%); pointer-events: none; }
 
-        /* --- الهيدر --- */
+        /* --- الهيدر (شعار مستطيل أبعاد 1080×307) --- */
         header { 
             background: var(--header-bg); 
             position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(29, 78, 216, 0.08);
             display: flex; flex-direction: column; align-items: center;
-            padding: 15px 0 12px 0; border-bottom: 2px solid var(--yellow-light);
+            padding: 12px 0 10px 0; border-bottom: 2px solid var(--yellow-light);
         }
-        .header-top { width: 100%; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 8px; }
+        .header-top { width: 100%; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 6px; padding: 0 15px; }
+        
         .header-logo-container { 
-            width: 110px; height: 110px; border-radius: 28px; background: white; padding: 4px; 
-            box-shadow: 0 6px 20px rgba(29, 78, 216, 0.2); overflow: hidden;
-            border: 2px solid var(--yellow-gold);
+            width: 190px; height: 54px; border-radius: 12px; background: #1e3a8a; padding: 3px; 
+            box-shadow: 0 4px 15px rgba(29, 78, 216, 0.2); overflow: hidden;
+            border: 1.5px solid var(--yellow-gold); display: flex; align-items: center; justify-content: center;
         }
-        .header-logo { width: 100%; height: 100%; border-radius: 23px; object-fit: cover; }
-        .theme-toggle { position: absolute; right: 20px; top: 0; width: 42px; height: 42px; background: var(--bg); border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.2rem; border: 1px solid rgba(0,0,0,0.05); color: var(--main-text); }
-        .cart-trigger-container { position: absolute; left: 20px; top: 0; }
-        .cart-trigger { width: 42px; height: 42px; background: var(--bg); border-radius: 14px; display: flex; align-items: center; justify-content: center; position: relative; border: 1px solid rgba(0,0,0,0.05); }
+        .header-logo { width: 100%; height: 100%; object-fit: contain; border-radius: 8px; }
+        
+        .theme-toggle { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; background: var(--bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; border: 1px solid rgba(0,0,0,0.05); color: var(--main-text); }
+        .cart-trigger-container { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); }
+        .cart-trigger { width: 40px; height: 40px; background: var(--bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; position: relative; border: 1px solid rgba(0,0,0,0.05); }
         .cart-trigger.shake { animation: cartShake 0.5s ease-in-out; }
         @keyframes cartShake { 0%, 100% { transform: scale(1) rotate(0deg); } 20%, 60% { transform: scale(1.15) rotate(-10deg); } 40%, 80% { transform: scale(1.15) rotate(10deg); } }
         .badge { position: absolute; top: -5px; right: -5px; background: var(--accent); color: white; font-size: 10px; font-weight: 800; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white; transform: scale(0); transition: 0.3s; }
@@ -106,37 +108,42 @@
         
         .header-bottom-addr { 
             text-align: center; width: auto; max-width: 90%; 
-            padding: 6px 16px; 
+            padding: 4px 14px; 
             background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(29, 78, 216, 0.1));
             border-radius: 50px; border: 1px solid rgba(251, 191, 36, 0.3);
-            display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 4px;
+            display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 2px;
         }
-        .branch-header-line { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 700; color: var(--main-text); }
-        .addr-tag { color: var(--accent); font-weight: 900; }
+        .branch-header-line { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 700; color: var(--main-text); }
 
-        /* القائمة */
-        .category-nav { display: flex; overflow-x: auto; white-space: nowrap; padding: 15px 10px; gap: 15px; scrollbar-width: none; background: var(--glass); backdrop-filter: blur(20px); position: sticky; top: 200px; z-index: 999; border-bottom: 0.5px solid rgba(0,0,0,0.05); }
-        .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 80px; }
-        .cat-img-box { width: 55px; height: 55px; border-radius: 16px; background: #e5e5ea; overflow: hidden; border: 2.5px solid transparent; transition: 0.3s; }
+        /* الشريط الفاصل للأقسام (معتم تماماً وثابت لمنع أي شفافية أثناء السكرول) */
+        .category-nav { 
+            display: flex; overflow-x: auto; white-space: nowrap; padding: 12px 10px; gap: 12px; 
+            scrollbar-width: none; background: var(--header-bg); position: sticky; top: 120px; 
+            z-index: 999; border-bottom: 2px solid var(--yellow-light); 
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.04);
+        }
+        .cat-item { display: flex; flex-direction: column; align-items: center; min-width: 75px; cursor: pointer; }
+        .cat-img-box { width: 50px; height: 50px; border-radius: 14px; background: #e5e5ea; overflow: hidden; border: 2.5px solid transparent; transition: 0.3s; }
         .cat-img-box img { width: 100%; height: 100%; object-fit: cover; }
         .cat-item.active .cat-img-box { border-color: var(--accent); transform: scale(1.05); box-shadow: 0 4px 10px rgba(29, 78, 216, 0.25); }
-        .cat-item span { font-size: 0.75rem; font-weight: 700; color: var(--desc-text); margin-top: 5px; }
+        .cat-item span { font-size: 0.75rem; font-weight: 700; color: var(--desc-text); margin-top: 4px; }
+        
         .menu-list { padding: 15px; max-width: 600px; margin: auto; }
         
-        /* الكروت والتنسيق الجمالي الجديد */
-        .food-card { background: var(--white); border-radius: 24px; margin-bottom: 16px; display: flex; padding: 18px; gap: 16px; align-items: flex-start; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(29, 78, 216, 0.08); }
-        .item-img-box { width: 95px; height: 95px; border-radius: 18px; overflow: hidden; background: #fef3c7; flex-shrink: 0; }
+        /* الكروت والتنسيق الجمالي */
+        .food-card { background: var(--white); border-radius: 22px; margin-bottom: 14px; display: flex; padding: 16px; gap: 14px; align-items: flex-start; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(29, 78, 216, 0.08); }
+        .item-img-box { width: 90px; height: 90px; border-radius: 16px; overflow: hidden; background: #fef3c7; flex-shrink: 0; }
         .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
-        .food-info { flex: 1; position: relative; display: flex; flex-direction: column; min-height: 95px; }
-        .food-name { font-weight: 800; font-size: 1rem; color: var(--main-text); }
-        .food-desc { font-size: 0.8rem; color: var(--desc-text); line-height: 1.4; margin-top: 4px; margin-bottom: 8px; }
-        .food-price { font-weight: 900; color: var(--accent); font-size: 1.05rem; white-space: nowrap; }
+        .food-info { flex: 1; position: relative; display: flex; flex-direction: column; min-height: 90px; }
+        .food-name { font-weight: 800; font-size: 0.98rem; color: var(--main-text); }
+        .food-desc { font-size: 0.78rem; color: var(--desc-text); line-height: 1.4; margin-top: 4px; margin-bottom: 8px; }
+        .food-price { font-weight: 900; color: var(--accent); font-size: 1.02rem; white-space: nowrap; }
         
-        .size-hint { font-size: 0.75rem; color: var(--accent); font-weight: 800; margin-top: 10px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-        .size-btn { padding: 5px 12px; border-radius: 10px; border: 1.5px solid var(--accent); background: transparent; color: var(--main-text); font-weight: 800; font-size: 0.82rem; cursor: pointer; transition: all 0.3s; }
+        .size-hint { font-size: 0.72rem; color: var(--accent); font-weight: 800; margin-top: 8px; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .size-btn { padding: 4px 10px; border-radius: 9px; border: 1.5px solid var(--accent); background: transparent; color: var(--main-text); font-weight: 800; font-size: 0.78rem; cursor: pointer; transition: all 0.3s; }
         .size-btn.active { background: var(--accent); color: white; transform: scale(1.05); box-shadow: 0 4px 10px rgba(29, 78, 216, 0.3); }
         
-        .order-btn { background: var(--accent); color: white; border: none; padding: 8px 20px; border-radius: 14px; font-size: 0.85rem; font-weight: 800; cursor: pointer; }
+        .order-btn { background: var(--accent); color: white; border: none; padding: 7px 18px; border-radius: 12px; font-size: 0.82rem; font-weight: 800; cursor: pointer; }
         .order-btn.added { background: var(--main-text); color: white; }
         .fly-item { position: fixed; z-index: 9999; pointer-events: none; width: 30px; height: 30px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
 
@@ -198,7 +205,6 @@
     <div id="splash-screen">
         <div class="loader-content">
             <img src="images/logotaybat.png" class="loader-logo-big" alt="مطعم الطيبات">
-            <h2 class="loader-text">مطعم الطيبات</h2>
             <p class="creative-slogan">حياة أفضل ... عيشها صح ❤️</p>
             <div class="loading-bar"><span></span></div>
             <div class="creative-counter">جاري التحضير... <span id="loadPercentage">0</span>%</div>
@@ -214,13 +220,12 @@
             <div class="cart-trigger-container">
                 <div class="cart-trigger" onclick="toggleCart(true)" id="cartBtn">
                     <span class="badge" id="cartBadge">0</span>
-                    <span style="font-size: 1.3rem;">🛒</span>
+                    <span style="font-size: 1.2rem;">🛒</span>
                 </div>
             </div>
         </div>
         <div class="header-bottom-addr">
             <div class="branch-header-line">
-                <span class="addr-tag">✨</span>
                 <span>حياة أفضل ... عيشها صح ❤️</span>
             </div>
         </div>
@@ -335,7 +340,6 @@
                 const data = await response.text();
                 const rows = data.split(/\r?\n/).slice(1);
                 
-                // ترتيب الشيت: القسم (0)، الصنف (1)، الوصف (2)، السعر (3)، صغير (4)، وسط (5)، كبير (6)
                 menuData = rows.map(row => {
                     if (!row.trim()) return null;
                     const col = parseCSVLine(row);
@@ -541,7 +545,7 @@
                 deferredPrompt.prompt();
                 deferredPrompt.userChoice.then((choice) => {
                     if (choice.outcome === 'accepted') {
-                        localStorage.setItem('pwayInstalled', 'true');
+                        localStorage.setItem('pwaInstalled', 'true');
                         document.getElementById('install-bar').style.display = 'none';
                     }
                     deferredPrompt = null;
