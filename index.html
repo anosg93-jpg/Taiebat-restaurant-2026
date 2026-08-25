@@ -84,7 +84,7 @@
         @keyframes progress { from { width: 0; } to { width: 100%; } }
         .splash-hidden { transform: translateY(-100%); pointer-events: none; }
 
-        /* --- الهيدر (شعار مستطيل أبعاد 1080×307) --- */
+        /* --- الهيدر --- */
         header { 
             background: var(--header-bg); 
             position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(29, 78, 216, 0.08);
@@ -123,7 +123,7 @@
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* الشريط الفاصل للأقسام (معتم تماماً وثابت وغير شفاف لمنع ظهور ما خلفه) */
+        /* الشريط الفاصل للأقسام */
         .category-nav { 
             display: flex; overflow-x: auto; white-space: nowrap; padding: 12px 10px; gap: 12px; 
             scrollbar-width: none; background: var(--header-bg); position: sticky; top: 138px; 
@@ -139,7 +139,7 @@
         
         .menu-list { padding: 15px; max-width: 600px; margin: auto; }
         
-        /* الكروت والتنسيق الجمالي */
+        /* الكروت */
         .food-card { background: var(--white); border-radius: 22px; margin-bottom: 14px; display: flex; padding: 16px; gap: 14px; align-items: flex-start; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border: 1px solid rgba(29, 78, 216, 0.08); }
         .item-img-box { width: 90px; height: 90px; border-radius: 16px; overflow: hidden; background: #fef3c7; flex-shrink: 0; }
         .item-img-box img { width: 100%; height: 100%; object-fit: cover; }
@@ -156,7 +156,7 @@
         .order-btn.added { background: var(--main-text); color: white; }
         .fly-item { position: fixed; z-index: 9999; pointer-events: none; width: 30px; height: 30px; background: var(--accent); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1); }
 
-        /* --- شريط التثبيت الذكي --- */
+        /* --- شريط التثبيت --- */
         #install-bar {
             position: fixed; bottom: 0; left: 0; width: 100%; background: var(--accent);
             color: white; padding: 14px 20px; display: none; justify-content: space-between;
@@ -312,6 +312,7 @@
     <script>
         const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRo3TAPz0JW6kTN0lhbPp_q_oG0msBoXgMFFTmuUnRfPlATmohgaSfx9Z-5rDJHUsO4rra0QC4lGN3c/pub?output=csv';
         const IMAGES_PATH = "./images/"; 
+        const CACHE_KEY = Date.now(); // مفتاح فريد لتجاوز كاش الصور لحظياً
         let menuData = [], cart = [];
         let currentTotal = 0; 
         let deferredPrompt;
@@ -347,22 +348,31 @@
         async function loadMenu() {
             startCreativeCounter();
             try {
-                const response = await fetch(`${csvUrl}&t=${Date.now()}`);
+                // منع التخزين المؤقت للبيانات من شيت جوجل تماماً لجعل الاستجابة لحظية
+                const fetchUrl = `${csvUrl}&nocache=${Date.now()}&_=${Math.random()}`;
+                const response = await fetch(fetchUrl, {
+                    cache: 'no-store',
+                    headers: {
+                        'Pragma': 'no-cache',
+                        'Cache-Control': 'no-cache, no-store, must-revalidate'
+                    }
+                });
                 const data = await response.text();
                 const rows = data.split(/\r?\n/).slice(1);
                 
                 menuData = rows.map(row => {
                     if (!row.trim()) return null;
                     const col = parseCSVLine(row);
+                    const itemName = col[1] ? col[1].trim() : '';
                     return { 
-                        category: col[0] || '', 
-                        name: col[1] || '', 
+                        category: col[0] ? col[0].trim() : '', 
+                        name: itemName, 
                         desc: col[2] || '', 
                         singlePrice: col[3] || '', 
                         priceS: col[4] || '', 
                         priceM: col[5] || '', 
                         priceL: col[6] || '', 
-                        img: `${IMAGES_PATH}${col[1]?.trim()}.jpg` 
+                        img: `${IMAGES_PATH}${itemName}.jpg?v=${CACHE_KEY}` 
                     };
                 }).filter(i => i && i.name);
                 
@@ -380,7 +390,7 @@
             const uniqueCats = [...new Map(menuData.map(item => [item.category, item])).values()];
             document.getElementById('catNav').innerHTML = uniqueCats.map((cat, idx) => `
                 <div class="cat-item ${idx === 0 ? 'active' : ''}" onclick="filterCat('${cat.category}', this)">
-                    <div class="cat-img-box"><img src="${IMAGES_PATH}${cat.category}.jpg" onerror="this.src='${IMAGES_PATH}default.jpg'"></div>
+                    <div class="cat-img-box"><img src="${IMAGES_PATH}${cat.category}.jpg?v=${CACHE_KEY}" onerror="this.src='${IMAGES_PATH}default.jpg'"></div>
                     <span>${cat.category}</span>
                 </div>
             `).join('');
@@ -536,7 +546,6 @@
                 if (isIOS) {
                     document.getElementById('install-bar').style.display = 'flex';
                 } else {
-                    // يظهر لكل زائر جديد يفتح اللينك لو مش مثبت التطبيق
                     document.getElementById('install-bar').style.display = 'flex';
                 }
             }
