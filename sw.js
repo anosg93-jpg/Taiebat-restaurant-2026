@@ -1,4 +1,4 @@
-const CACHE_NAME = 'taybat-menu-v5';
+const CACHE_NAME = 'taybat-menu-v6';
 const assetsToCache = [
   'index.html',
   'manifest.json',
